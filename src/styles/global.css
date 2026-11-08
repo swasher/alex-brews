@@ -1,1 +1,90 @@
 @import "tailwindcss";
+
+@theme {
+	--font-sans:
+		"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+
+	/* Warm, near-black coffee tones */
+	--color-espresso-950: #120c09;
+	--color-espresso-900: #1a120d;
+	--color-espresso-850: #1f150f;
+	--color-espresso-800: #281a12;
+	--color-espresso-700: #35231a;
+
+	/* Cream typography */
+	--color-crema-50: #f4e9d8;
+	--color-crema-100: #ecdcc6;
+	--color-crema-200: #d9c7b2;
+	--color-crema-300: #c2ae97;
+
+	/* Muted copper/olive */
+	--color-mocha-400: #a08a76;
+	--color-mocha-500: #9a8270;
+	--color-mocha-600: #8a7360;
+	--color-ember-500: #c07a4d;
+	--color-ember-400: #d89266;
+	--color-ember-300: #e6a97f;
+	--color-sage-500: #8a9a72;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+		color-scheme: dark;
+	}
+
+	body {
+		background-color: var(--color-espresso-950);
+		color: var(--color-crema-50);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	::selection {
+		background-color: var(--color-ember-500);
+		color: var(--color-espresso-950);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-ember-400);
+		outline-offset: 4px;
+	}
+}
+
+@layer utilities {
+	/* Fine paper grain over dark surfaces. */
+	.grain {
+		background-image: radial-gradient(
+			circle at 1px 1px,
+			rgb(244 233 216 / 0.12) 1px,
+			transparent 0
+		);
+		background-size: 6px 6px;
+	}
+
+	/* Heavy, editorial display treatment. */
+	.display {
+		font-family: var(--font-display);
+		font-weight: 400;
+		letter-spacing: -0.02em;
+	}
+}
+
+/* Without JS the split-text hero must still be readable. */
+@media (scripting: none) {
+	.split-parent {
+		visibility: visible !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	.split-parent {
+		visibility: visible !important;
+	}
+}

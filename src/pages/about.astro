@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CoverImage from '../components/CoverImage.astro';
+import TiltedCard from '../components/react/bits/TiltedCard';
+import { getAboutContent } from '../lib/content/data';
+
+const about = getAboutContent();
+const paragraphs = about.content.split('\n\n');
+---
+
+<BaseLayout title="Обо мне" description={about.introduction}>
+	<div class="mx-auto max-w-7xl px-5 pb-12 pt-16 sm:px-8 sm:pt-24">
+		<p class="text-[10px] font-medium uppercase tracking-[0.3em] text-ember-400">Кто пишет</p>
+
+		<div class="mt-10 grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+			<div class="lg:sticky lg:top-28 lg:self-start">
+				{
+					about.portrait && (
+						<TiltedCard
+							client:visible
+							containerHeight="clamp(22rem, 58vw, 38rem)"
+							containerWidth="100%"
+							imageWidth="100%"
+							imageHeight="100%"
+							radius="22px"
+							glare={0.32}
+							glareColor="#d89266"
+							shadow={0.45}
+							rotateAmplitude={7}
+							scaleOnHover={1.02}
+							showTooltip={false}
+							intro={false}
+							gyroscope={false}
+						>
+							<CoverImage
+								alt={about.portrait.alt}
+								tone="plum"
+								label="Alex"
+								class="h-full w-full"
+							/>
+						</TiltedCard>
+					)
+				}
+
+				{
+					about.links && about.links.length > 0 && (
+						<ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+							{about.links.map((link) => (
+								<li>
+									<a
+										href={link.url}
+										class="text-[10px] font-medium uppercase tracking-[0.24em] text-mocha-400 transition hover:text-ember-300"
+										rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+										target={link.url.startsWith('http') ? '_blank' : undefined}
+									>
+										{link.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+
+			<div>
+				<h1 class="display text-[clamp(3.2rem,8vw,6.5rem)] leading-[0.9] text-crema-50">
+					{about.title}
+				</h1>
+
+				<p class="mt-8 text-xl leading-relaxed text-crema-100 sm:text-2xl">
+					{about.introduction}
+				</p>
+
+				<div class="mt-10 flex flex-col gap-6">
+					{
+						paragraphs.map((paragraph) => (
+							<p class="text-sm leading-relaxed text-crema-200/80 sm:text-base">
+								{paragraph}
+							</p>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</BaseLayout>

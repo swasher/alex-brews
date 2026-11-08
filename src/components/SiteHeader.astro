@@ -1,0 +1,43 @@
+---
+const nav = [
+	{ href: '/coffee', label: 'Кофе' },
+	{ href: '/equipment', label: 'Оборудование' },
+	{ href: '/about', label: 'Обо мне' },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="sticky top-0 z-50 border-b border-crema-50/10 bg-espresso-950/70 backdrop-blur-md">
+	<div
+		class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+	>
+		<a href="/" class="font-display text-2xl leading-none tracking-tight text-crema-50">
+			Alex Brews
+		</a>
+
+		<nav aria-label="Основная навигация">
+			<ul class="flex items-center gap-5 sm:gap-7">
+				{
+					nav.map((item) => (
+						<li>
+							<a
+								href={item.href}
+								aria-current={isActive(item.href) ? 'page' : undefined}
+								class:list={[
+									'text-[10px] font-medium uppercase tracking-[0.22em] transition',
+									isActive(item.href)
+										? 'text-ember-400'
+										: 'text-mocha-400 hover:text-crema-50',
+								]}
+							>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</header>

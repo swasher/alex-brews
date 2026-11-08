@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CoverImage from '../../components/CoverImage.astro';
+import { getCoffeeBySlug } from '../../lib/content/data';
+import { formatDate } from '../../lib/format';
+import type { Tone } from '../../lib/tones';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	return Astro.rewrite('/404');
+}
+
+const coffee = getCoffeeBySlug(slug);
+
+if (!coffee) {
+	return Astro.rewrite('/404');
+}
+
+const details = [
+	{ label: 'Страна', value: coffee.country },
+	{ label: 'Регион', value: coffee.region },
+	{ label: 'Ферма', value: coffee.farm },
+	{ label: 'Разновидность', value: coffee.variety },
+	{ label: 'Обработка', value: coffee.processing },
+	{ label: 'Высота', value: coffee.altitude },
+	{ label: 'Обжарка', value: coffee.roastLevel },
+	{ label: 'Дата обжарки', value: formatDate(coffee.roastDate) },
+	{ label: 'Дата покупки', value: formatDate(coffee.purchaseDate) },
+	{ label: 'Дата открытия', value: formatDate(coffee.openingDate) },
+].filter((detail): detail is { label: string; value: string } => Boolean(detail.value));
+
+const galleryTones: Tone[] = ['sand', 'olive', 'plum'];
+---
+
+<BaseLayout
+	title={coffee.name}
+	description={`${coffee.name} от ${coffee.roaster}: ${coffee.description.slice(0, 150)}`}
+>
+	<article>
+		<section class="relative flex min-h-[74svh] flex-col justify-end overflow-hidden bg-espresso-950">
+			<CoverImage
+				alt={coffee.image.alt}
+				tone="amber"
+				label={coffee.country}
+				class="absolute! inset-0"
+			/>
+			<div
+				class="absolute inset-0 bg-gradient-to-t from-espresso-950 via-espresso-950/30 to-transparent"
+				aria-hidden="true"
+			>
+			</div>
+
+			<div class="relative mx-auto w-full max-w-7xl px-5 pb-12 pt-40 sm:px-8 sm:pb-16">
+				<nav aria-label="Хлебные крошки" class="text-[10px] uppercase tracking-[0.2em] text-mocha-400">
+					<ol class="flex flex-wrap items-center gap-2">
+						<li><a href="/coffee" class="transition hover:text-ember-300">Кофе</a></li>
+						<li aria-hidden="true">/</li>
+						<li aria-current="page" class="text-crema-300">{coffee.name}</li>
+					</ol>
+				</nav>
+
+				<p class="mt-8 text-[10px] font-medium uppercase tracking-[0.28em] text-ember-400">
+					{coffee.roaster}
+				</p>
+				<h1 class="mt-3 max-w-5xl font-display text-[clamp(2.6rem,8vw,7rem)] leading-[0.9] text-crema-50">
+					{coffee.name}
+				</h1>
+				<p class="mt-4 text-sm text-crema-200/80">
+					{coffee.country}
+					{coffee.region && <span> · {coffee.region}</span>}
+				</p>
+			</div>
+		</section>
+
+		<div class="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
+			<div class="grid gap-14 lg:grid-cols-[1fr_16rem] lg:gap-24">
+				<div class="flex flex-col gap-12">
+					<p class="whitespace-pre-line text-xl leading-relaxed text-crema-200 sm:text-2xl">
+						{coffee.description}
+					</p>
+
+					<div>
+						<h2 class="text-[10px] font-medium uppercase tracking-[0.28em] text-mocha-500">
+							Во вкусе
+						</h2>
+						<ul class="mt-5 flex flex-wrap gap-x-7 gap-y-2">
+							{coffee.tastingNotes.map((note) => (
+								<li class="font-display text-3xl leading-none text-crema-100 sm:text-5xl">
+									{note}
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
+
+				<aside class="flex flex-col gap-8 border-t border-crema-50/10 pt-8 lg:border-t-0 lg:pt-0">
+					{
+						coffee.rating !== undefined && (
+							<div>
+								<p class="text-[10px] uppercase tracking-[0.24em] text-mocha-500">Оценка</p>
+								<p class="mt-2 font-display text-6xl leading-none text-ember-300">
+									{coffee.rating}
+									<span class="text-2xl text-mocha-400"> / 10</span>
+								</p>
+							</div>
+						)
+					}
+
+					<dl class="grid grid-cols-2 gap-x-6 gap-y-5 lg:grid-cols-1">
+						{
+							details.map((detail) => (
+								<div>
+									<dt class="text-[9px] uppercase tracking-[0.2em] text-mocha-500">{detail.label}</dt>
+									<dd class="mt-1 text-sm text-crema-200">{detail.value}</dd>
+								</div>
+							))
+						}
+					</dl>
+				</aside>
+			</div>
+
+			{
+				coffee.gallery && coffee.gallery.length > 0 && (
+					<div class="mt-16">
+						<h2 class="text-[10px] font-medium uppercase tracking-[0.28em] text-mocha-500">
+							Ещё кадры
+						</h2>
+						<ul class="mt-5 flex gap-4 overflow-x-auto pb-2">
+							{coffee.gallery.map((image, index) => (
+								<li class="w-64 shrink-0 sm:w-80">
+									<CoverImage
+										alt={image.alt}
+										tone={galleryTones[index % galleryTones.length]}
+										class="aspect-4/3 w-full rounded-xl"
+									/>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+
+			<div class="mt-16 border-t border-crema-50/10 pt-6">
+				<a
+					href="/coffee"
+					class="text-[10px] font-medium uppercase tracking-[0.24em] text-mocha-400 transition hover:text-ember-300"
+				>
+					← Вся коллекция
+				</a>
+			</div>
+		</div>
+	</article>
+</BaseLayout>

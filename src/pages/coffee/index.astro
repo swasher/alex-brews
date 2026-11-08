@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CoverImage from '../../components/CoverImage.astro';
+import { getAllCoffees } from '../../lib/content/data';
+import { toneAt } from '../../lib/tones';
+
+const coffees = getAllCoffees();
+---
+
+<BaseLayout
+	title="Кофе"
+	description="Коллекция кофе: обжарщики, происхождение, обработка и личные заметки о каждом лоте."
+>
+	<div class="mx-auto max-w-7xl px-5 pb-12 pt-16 sm:px-8 sm:pt-24">
+		<header>
+			<h1 class="display text-[clamp(3.5rem,11vw,9rem)] leading-[0.86] text-crema-50">
+				Кофе
+			</h1>
+			<div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+				<p class="max-w-lg text-sm leading-relaxed text-mocha-400">
+					Каждый лот — это пакет, который однажды оказался на кухне. Обжарщик, происхождение,
+					обработка и то, что в итоге оказалось в чашке.
+				</p>
+				<p class="text-[10px] uppercase tracking-[0.24em] text-mocha-500">
+					{coffees.length} {coffees.length === 1 ? 'запись' : 'записей'}
+				</p>
+			</div>
+		</header>
+
+		<div class="mt-14 border-t border-crema-50/10">
+			{
+				coffees.map((coffee, index) => (
+					<a
+						href={`/coffee/${coffee.slug}`}
+						class="group grid grid-cols-[2rem_1fr] items-center gap-x-4 gap-y-3 border-b border-crema-50/10 py-6 transition hover:bg-espresso-900 sm:grid-cols-[3rem_1fr_9rem_7rem] sm:gap-x-6 sm:px-2 sm:py-8"
+					>
+						<span class="text-[11px] text-mocha-500">
+							{String(index + 1).padStart(2, '0')}
+						</span>
+
+						<div>
+							<h2 class="font-display text-3xl leading-none text-crema-50 transition group-hover:text-ember-300 sm:text-5xl">
+								{coffee.name}
+							</h2>
+							<p class="mt-2 text-[10px] uppercase tracking-[0.18em] text-mocha-400">
+								{coffee.roaster} · {coffee.country}
+							</p>
+						</div>
+
+						<div class="hidden text-right text-xs leading-relaxed text-mocha-400 sm:block">
+							<p>{coffee.processing}</p>
+							<p>{coffee.region ?? coffee.country}</p>
+						</div>
+
+						<CoverImage
+							alt={coffee.image.alt}
+							tone={toneAt(index)}
+							class="hidden h-20 w-28 rotate-0 rounded-lg transition duration-500 group-hover:rotate-2 group-hover:scale-[1.04] sm:block"
+						/>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</BaseLayout>

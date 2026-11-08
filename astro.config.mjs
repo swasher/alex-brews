@@ -11,6 +11,12 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   output: 'server',
   session: false,
+  server: {
+    // Разрешает Vite принимать подключения с любых доменов (включая ngrok)
+    allowedHosts: true,
+    // Также можно открыть сервер для локальной сети, если нужно:
+    // host: true
+  },
   integrations: [react()],
   adapter: cloudflare({
     imageService: 'passthrough',

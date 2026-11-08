@@ -1,16 +1,216 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CoverImage from '../components/CoverImage.astro';
+import Grainient from '../components/react/bits/Grainient';
+import SplitText from '../components/react/bits/SplitText';
+import SpotlightCard from '../components/react/bits/SpotlightCard';
+import { getFeaturedCoffees, getHomepageContent } from '../lib/content/data';
+
+const home = getHomepageContent();
+const featured = getFeaturedCoffees();
+
+const sections = [
+	{
+		href: '/coffee',
+		index: '01',
+		title: 'Кофе',
+		text: 'Лоты, обжарщики и личные заметки о вкусе.',
+	},
+	{
+		href: '/equipment',
+		index: '02',
+		title: 'Оборудование',
+		text: 'То, что стоит на полке и помогает получить нужную чашку.',
+	},
+	{
+		href: '/about',
+		index: '03',
+		title: 'Обо мне',
+		text: 'Как кофе стал отдельным интересом.',
+	},
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+	title="Личный кофейный журнал"
+	description="Alex Brews — личный журнал о кофе: коллекция лотов, оборудование и заметки о вкусе."
+>
+	<section class="relative flex min-h-[calc(100svh-5.5rem)] flex-col justify-end overflow-hidden bg-espresso-950">
+		<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_15%,#6b3a20_0%,#2a1810_45%,#120c09_100%)]">
+			<Grainient
+				client:load
+				colors={['#120c09', '#1f150f', '#3a1f12', '#6b3a20', '#c07a4d']}
+				type="linear"
+				angle={68}
+				speed={0.45}
+				flow={0.85}
+				scale={1.15}
+				softness={0.9}
+				silk={0.42}
+				grainAmount={0.07}
+				grainSize={1.4}
+				contrast={1.04}
+				saturation={1.12}
+				interactive
+				stir={0.85}
+				className="absolute inset-0"
+			/>
+		</div>
+		<div
+			class="pointer-events-none absolute inset-0 bg-gradient-to-b from-espresso-950/30 via-espresso-950/5 to-espresso-950"
+			aria-hidden="true"
+		>
+		</div>
+
+		<div class="relative mx-auto w-full max-w-7xl px-5 pb-14 sm:px-8 sm:pb-18">
+			<p class="mb-6 text-[10px] font-medium uppercase tracking-[0.32em] text-mocha-400">
+				Личный кофейный журнал
+			</p>
+
+			<SplitText
+				client:load
+				text="Alex Brews"
+				tag="h1"
+				splitType="chars"
+				effect="rise"
+				duration={1.15}
+				delay={45}
+				trigger="load"
+				textAlign="left"
+				className="display text-[clamp(4rem,15vw,12.5rem)] leading-[0.82] text-crema-50"
+			/>
+
+			<div class="mt-9 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+				<p class="max-w-md text-sm leading-relaxed text-crema-200/80 sm:text-base">
+					{home.subtitle}. {home.introduction}
+				</p>
+				<a
+					href="#sections"
+					class="group inline-flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.24em] text-crema-200 transition hover:text-ember-300"
+				>
+					Смотреть журнал
+					<svg class="h-4 w-4 transition group-hover:translate-y-1" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+						<path d="M8 2v11M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+		<p class="max-w-5xl font-display text-[clamp(1.9rem,4.2vw,3.8rem)] leading-[1.1] text-crema-100">
+			{home.title}.
+			<span class="mt-4 block text-[0.44em] leading-relaxed text-mocha-400">
+				{home.introduction}
+			</span>
+		</p>
+	</section>
+
+	<section id="sections" class="border-t border-crema-50/10">
+		{
+			sections.map((section) => (
+				<a
+					href={section.href}
+					class="group flex items-center justify-between gap-6 border-b border-crema-50/10 px-5 py-10 transition hover:bg-espresso-900 sm:px-8 sm:py-14"
+				>
+					<div class="flex items-baseline gap-4 sm:gap-8">
+						<span class="text-[11px] text-mocha-500">{section.index}</span>
+						<span class="font-display text-[clamp(2.4rem,7vw,6rem)] leading-none text-crema-50 transition group-hover:text-ember-300">
+							{section.title}
+						</span>
+					</div>
+					<div class="hidden items-center gap-10 sm:flex">
+						<p class="max-w-56 text-right text-xs leading-relaxed text-mocha-400">
+							{section.text}
+						</p>
+						<svg class="h-5 w-5 text-mocha-500 transition group-hover:translate-x-1 group-hover:text-ember-300" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+							<path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</div>
+				</a>
+			))
+		}
+	</section>
+
+	<section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
+		<div class="flex flex-wrap items-end justify-between gap-4">
+			<h2 class="font-display text-[clamp(2rem,4vw,3.5rem)] leading-none text-crema-50">
+				Из последнего
+			</h2>
+			<a
+				href="/coffee"
+				class="text-[10px] font-medium uppercase tracking-[0.24em] text-mocha-400 transition hover:text-ember-300"
+			>
+				Весь кофе
+			</a>
+		</div>
+
+		<div class="mt-10 grid gap-6 lg:grid-cols-3">
+			{
+				featured[0] && (
+					<SpotlightCard
+						client:visible
+						theme="dark"
+						className="p-0! lg:col-span-2"
+						spotlightColor="rgba(216, 146, 102, 0.45)"
+						intensity={0.22}
+						borderGlow={0.55}
+						style={{ backgroundColor: '#1a120d' }}
+					>
+						<a href={`/coffee/${featured[0].slug}`} class="group block">
+							<CoverImage
+								alt={featured[0].image.alt}
+								tone="amber"
+								label={featured[0].country}
+								class="aspect-16/10 w-full"
+							/>
+							<div class="flex flex-col gap-2 p-6 sm:p-8">
+								<p class="text-[10px] uppercase tracking-[0.24em] text-mocha-400">
+									{featured[0].roaster}
+								</p>
+								<h3 class="font-display text-3xl leading-tight text-crema-50 transition group-hover:text-ember-300 sm:text-4xl">
+									{featured[0].name}
+								</h3>
+								<p class="text-sm text-mocha-400">
+									{featured[0].country} · {featured[0].processing}
+								</p>
+							</div>
+						</a>
+					</SpotlightCard>
+				)
+			}
+
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+				{
+					featured.slice(1).map((coffee, index) => (
+						<SpotlightCard
+							client:visible
+							theme="dark"
+							className="p-0!"
+							spotlightColor="rgba(216, 146, 102, 0.4)"
+							intensity={0.2}
+							borderGlow={0.45}
+							style={{ backgroundColor: '#1a120d' }}
+						>
+							<a href={`/coffee/${coffee.slug}`} class="group flex h-full flex-col">
+								<CoverImage
+									alt={coffee.image.alt}
+									tone={index === 0 ? 'olive' : 'plum'}
+									class="aspect-16/10 w-full"
+								/>
+								<div class="flex flex-col gap-1.5 p-6">
+									<p class="text-[10px] uppercase tracking-[0.24em] text-mocha-400">
+										{coffee.roaster}
+									</p>
+									<h3 class="font-display text-2xl leading-tight text-crema-50 transition group-hover:text-ember-300">
+										{coffee.name}
+									</h3>
+								</div>
+							</a>
+						</SpotlightCard>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+Astro.response.status = 404;
+---
+
+<BaseLayout title="Страница не найдена" description="Такой страницы на сайте нет." noindex>
+	<div class="mx-auto flex max-w-7xl flex-col items-start gap-6 px-5 py-24 sm:px-8 sm:py-32">
+		<p class="text-[10px] font-medium uppercase tracking-[0.3em] text-ember-400">404</p>
+		<h1 class="display max-w-4xl text-[clamp(3rem,9vw,8rem)] leading-[0.88] text-crema-50">
+			Страница не найдена
+		</h1>
+		<p class="max-w-md text-sm leading-relaxed text-mocha-400">
+			Возможно, ссылка устарела или в адресе есть опечатка.
+		</p>
+		<a
+			href="/"
+			class="mt-2 text-[10px] font-medium uppercase tracking-[0.24em] text-crema-100 underline decoration-crema-50/20 underline-offset-8 transition hover:text-ember-300"
+		>
+			На главную
+		</a>
+	</div>
+</BaseLayout>
