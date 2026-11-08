@@ -13,6 +13,7 @@
     "generate-types": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.12",
     "@astrojs/cloudflare": "^14.4.6",
     "@astrojs/react": "^7.1.4",
     "@radui/ui": "^1.2.1",
@@ -23,6 +24,7 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
     "wrangler": "^4.158.0"
   }
 }

@@ -6,6 +6,10 @@ dist/
 .astro/
 .vercel/
 .netlify/
+worker-configuration.d.ts
+
+# wrangler / cloudflare local state
+.wrangler/
 
 # dependencies
 node_modules/
@@ -24,6 +28,11 @@ pnpm-debug.log*
 .env.*
 !.env.example
 !.env.template
+
+# wrangler secrets for local dev
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
 
 # caches and build info
 .cache/
@@ -51,3 +60,9 @@ $RECYCLE.BIN/
 *.swp
 *.swo
 *~
+.history/
+
+# misc local artifacts
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
